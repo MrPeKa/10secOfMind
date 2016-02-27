@@ -1,40 +1,46 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Movement : MonoBehaviour {
+public class Movement : MonoBehaviour
+{
 
     public float speed;
     public Rigidbody rb;
-    public Transform player;
 
-    void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+    public int spinSpeed = 100;
+
+    private RotationDirection rotationDirection = RotationDirection.NONE;
+
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+        CheckInput();
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
         Move(speed);
+        Rotate();
     }
 
     void Move(float speed)
     {
-        if (Input.GetAxis("Horizontal")!=0 || Input.GetAxis("Vertical")!=0)
+        var horizontalAxis = Input.GetAxis("Horizontal");
+        var verticalAxis = Input.GetAxis("Vertical");
+
+        var oldVelocity = rb.velocity;
+        var newVelocity = new Vector3
         {
-            rb.velocity = new Vector3(Input.GetAxis("Horizontal") * speed * Time.deltaTime, 0, Input.GetAxis("Vertical") * speed * Time.deltaTime);
-   //         player.rotation = Quaternion.Slerp(transform.rotation, Mathf.Sign(Input.GetAxis("Horizontal")) * 90, Time.deltaTime);
-
-            var lookPos = player.position - transform.position;
-            lookPos.y = 0;
-            var rotation = Quaternion.LookRotation(lookPos);
-            rotation *= Quaternion.Euler(0, 90, 0); // this add a 90 degrees Y rotation
-            player.rotation = Quaternion.Slerp(player.rotation, rotation, Time.deltaTime * 10);
-
-
-        }
-        else
-        {
-            rb.velocity = new Vector3(0, 0, 0);
-        }
+            x = (horizontalAxis != 0) ? horizontalAxis * speed : oldVelocity.x,
+            y = oldVelocity.y,
+            z = (verticalAxis != 0) ? verticalAxis * speed : oldVelocity.z
+        };
+        rb.velocity = newVelocity;
     }
 
     void AttachMove(Rigidbody person)
@@ -42,5 +48,31 @@ public class Movement : MonoBehaviour {
         rb = person.GetComponent<Rigidbody>();
     }
 
+    private void CheckInput()
+    {
+        if (Input.GetKey(KeyCode.V))
+            rotationDirection = RotationDirection.LEFT;
+        else if (Input.GetKey(KeyCode.B))
+            rotationDirection = RotationDirection.RIGHT;
+        else
+            rotationDirection = RotationDirection.NONE;
+    }
 
+    private void Rotate()
+    {
+        switch(rotationDirection)
+        {
+            case RotationDirection.LEFT:
+                rb.transform.Rotate(Vector3.up, spinSpeed);
+                break;
+            case RotationDirection.RIGHT:
+                rb.transform.Rotate(Vector3.down, spinSpeed);
+                break;
+        }
+    }
+}
+
+enum RotationDirection
+{
+    NONE, LEFT, RIGHT
 }

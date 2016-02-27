@@ -1,43 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 public class Timer : MonoBehaviour {
 
     public TxtMsg text;
-    public float effect;
-    GameObject txt;
 
-    // Use this for initialization
-    void Start()
-    {
-        txt = GameObject.Find("Text");
-    }
+	// Use this for initialization
+	void Start () {
+	    
+	}
+	
 	// Update is called once per frame
 	void Update () {
-
-        if (text.show && text._currentDuration > 0)
+        if (text.show && text.duration<5)
         {
-            text._currentDuration -= Time.deltaTime;
+            text.duration += Time.deltaTime;
         }
-        if(text._currentDuration <= 0 && text.show)
+        if(text.duration>5 && text.show)
         {
-                txt.GetComponent<Text>().enabled = !txt.GetComponent<Text>().enabled;
+            text.gameObject.GetComponent<GUIText>().enabled = !text.gameObject.GetComponent<GUIText>().enabled;
             text.show = false;
-            text._currentDuration = text.duration;
         }
-
-        if (effect < 10)
-        {
-            effect += Time.deltaTime;
-            //TODO effects
-
-        }
-        else
-        {
-            effect = 0;
-        }
-
+        
 	}
 
 }

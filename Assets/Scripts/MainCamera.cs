@@ -9,12 +9,6 @@ public class MainCamera : MonoBehaviour {
    
 
 	// Use this for initialization
-
-    void Awake()
-    {
-        //TODO screen loading
-    }
-   
 	void Start () {
       //  Vector3 targetPosition = new Vector3(target.transform.position.x*speed + 5,target.transform.position.y*speed + 5, target.transform.position.z + 5);
     }

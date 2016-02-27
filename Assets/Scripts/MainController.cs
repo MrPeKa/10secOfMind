@@ -15,15 +15,15 @@ public class MainController : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.N))
         {
-            changeMove("Player");
+            setOnOffMoveOfObject("Player");
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
-            changeMove("NPC");
+            setOnOffMoveOfObject("NPC");
         }
     }
 
-    void changeMove(string objectName)
+    void setOnOffMoveOfObject(string objectName)
     {
         move = GameObject.Find(objectName).transform.FindChild("body").gameObject;
         move.GetComponent<Movement>().enabled = !move.GetComponent<Movement>().enabled;

@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 
 public class TxtMsg : MonoBehaviour {
 
-    public float duration;
-    public float _currentDuration;
+    public float duration = 0;
     public bool show = false;
-    public string msg;
+    public string msg = "hello";
 
     // Use this for initialization
     void Start () {
-        _currentDuration = duration;
+	
 	}
 	
 	// Update is called once per frame
@@ -21,27 +19,18 @@ public class TxtMsg : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Player")
+        if (other.name == "Player" && duration<5)
         {
-            ShowText(msg);
+            show = true;
+            ShowText();
         }
     }
 
-    public void ShowText()
+    void ShowText()
     {
-        if (_currentDuration > 0)
-        {
-            show = true;
-            GameObject.Find("Text").GetComponent<Text>().enabled = true;
-        }
-    }
-    public void ShowText(string msg)
-    {
-        if (_currentDuration > 0)
-        {
-            show = true;
-            GameObject.Find("Text").GetComponent<Text>().enabled = true;
-            GameObject.Find("Text").GetComponent<Text>().text = msg;
-        }
+ 
+            gameObject.transform.position = new Vector3(0.5f, 0.5f, 0.0f);
+            gameObject.GetComponent<GUIText>().text = msg;
+
     }
 }
